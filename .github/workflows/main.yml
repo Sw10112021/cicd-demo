@@ -12,6 +12,6 @@ jobs:
       - name: Sync Files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ftp.tileindia.in
-        username: admin_github@tileindia.in
+        server: ftp.in
+        username: admin
         password: ${{ secrets.FTP_PASSWORD }}
