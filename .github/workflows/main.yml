@@ -1,17 +1,21 @@
-name: Deploy on Push
-on: push
+name: Build & Deploy
+on:
+  push:
+    branches: [main]
+
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
     runs-on: ubuntu-latest
-  
     steps:
-  
-      - name: Get Latest Code
-      uses: actions/checkout@v2
-      - name: Sync Files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ftp.in
-        username: admin
-        password: ${{ secrets.FTP_PASSWORD }}
+      - name: Deploy CI/CD Test App
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          
+          script: |
+            cd /var/www/html/ci_cd/ci_cd_pipieline_v2
+            git pull origin main
+            sudo pm2 restart 6
+            echo Deployment successful to digital ocean
